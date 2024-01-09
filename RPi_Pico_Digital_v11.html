@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flipbook</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        .page {
+            display: none;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <!-- Pages will be dynamically added here -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const totalPages = 139; // Set the total number of pages
+            let currentPage = 0;
+
+            function showPage(pageNumber) {
+                const pageFileName = `RPi_Pico_Digital_v11/RPi_PiPico_Digital_v11-${pad(pageNumber + 1, 3)}.png`;
+                const pagePath = pageFileName;
+
+                const pageElement = document.getElementById(`page-${pageNumber}`);
+                pageElement.style.backgroundImage = `url(${pagePath})`;
+            }
+
+            function createPages() {
+                const container = document.body;
+                for (let i = 0; i < totalPages; i++) {
+                    const pageElement = document.createElement("div");
+                    pageElement.className = "page";
+                    pageElement.id = `page-${i}`;
+                    container.appendChild(pageElement);
+                }
+            }
+
+            function pad(number, length) {
+                // Function to pad numbers with leading zeros
+                let str = '' + number;
+                while (str.length < length) {
+                    str = '0' + str;
+                }
+                return str;
+            }
+
+            document.body.addEventListener("keydown", function (event) {
+                if (event.key === "ArrowRight") {
+                    if (currentPage < totalPages - 1) {
+                        currentPage++;
+                        showPage(currentPage);
+                    }
+                } else if (event.key === "ArrowLeft") {
+                    if (currentPage > 0) {
+                        currentPage--;
+                        showPage(currentPage);
+                    }
+                }
+            });
+
+            // Create pages and trigger initial display
+            createPages();
+            showPage(currentPage);
+        });
+    </script>
+</body>
+</html>
