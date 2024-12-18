@@ -59,15 +59,16 @@
                 // Calcula la altura proporcional según la relación de aspecto
                 const newHeight = (originalHeight / originalWidth) * newWidth;
 
-                // Si la altura calculada es mayor que la altura de la pantalla, ajusta la altura
+                // Si la altura calculada excede la altura de la pantalla, ajusta la altura
                 if (newHeight > screenHeight) {
+                    // Si la altura es mayor que la pantalla, ajusta el alto para que se ajuste a la pantalla
                     const scaleFactor = screenHeight / newHeight;
                     $('#magazine').css({
                         width: `${newWidth * scaleFactor}px`,
                         height: `${screenHeight}px`
                     });
                 } else {
-                    // Si la altura calculada es menor que la altura de la pantalla, ajusta el tamaño
+                    // Si la altura es menor o igual a la pantalla, ajusta la imagen a la pantalla
                     $('#magazine').css({
                         width: `${newWidth}px`,
                         height: `${newHeight}px`
