@@ -1,40 +1,43 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
-<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-<script type="text/javascript" src="turn.min.js"></script>
-
-<style type="text/css">
-body {
-    background: #ccc;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    overflow: hidden;
-}
-#magazine{
-	width:1152px;
-	height:752px;
-}
-#magazine .turn-page{
-	background-color:#ccc;
-	background-size:100% 100%;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flipbook con Turn.js</title>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="turn.min.js"></script>
+    <style>
+        body {
+            background: #ccc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        #magazine {
+            width: 1152px;
+            height: 752px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+        #magazine .turn-page {
+            background-color: #fff;
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
 </head>
 <body>
 
 <div id="magazine">
-	<div style="background-image:url('RPi_PiPico_Digital_v11/RPi_PiPico_Digital_v11-001.png');"></div>
-	<div style="background-image:url('RPi_PiPico_Digital_v11/RPi_PiPico_Digital_v11-002.png');"></div>
-	<div style="background-image:url('RPi_PiPico_Digital_v11/RPi_PiPico_Digital_v11-003.png');"></div>
-	<div style="background-image:url('RPi_PiPico_Digital_v11/RPi_PiPico_Digital_v11-004.png');"></div>
-	<div style="background-image:url('RPi_PiPico_Digital_v11/RPi_PiPico_Digital_v11-005.png');"></div>
-	<div style="background-image:url('RPi_PiPico_Digital_v11/RPi_PiPico_Digital_v11-006.png');"></div>
+    <div style="background-image:url('RPi_PiPico_Digital_v11/RPi_PiPico_Digital_v11-001.png');"></div>
+    <div style="background-image:url('RPi_PiPico_Digital_v11/RPi_PiPico_Digital_v11-002.png');"></div>
+    <div style="background-image:url('RPi_PiPico_Digital_v11/RPi_PiPico_Digital_v11-003.png');"></div>
+    <div style="background-image:url('RPi_PiPico_Digital_v11/RPi_PiPico_Digital_v11-004.png');"></div>
+    <div style="background-image:url('RPi_PiPico_Digital_v11/RPi_PiPico_Digital_v11-005.png');"></div>
+    <div style="background-image:url('RPi_PiPico_Digital_v11/RPi_PiPico_Digital_v11-006.png');"></div>
 </div>
-
 
 <script>
     $(document).ready(function () {
@@ -43,17 +46,25 @@ body {
             height: 752,
             display: 'double',
             autoCenter: true,
-            gradients: true,
-            acceleration: true,
-            elevation: 50,
-            duration: 1000
+            gradients: true, // Habilita el efecto visual
+            acceleration: true, // Usa aceleración por hardware
+            elevation: 50, // Altura del efecto
+            duration: 1000 // Duración de la animación
+        });
+
+        // Eventos para gestos táctiles
+        $(document).on('touchstart', function (e) {
+            if (e.touches.length > 1) {
+                e.preventDefault();
+            }
         });
 
         $(window).on('keydown', function (e) {
-            if (e.keyCode === 37) $('#magazine').turn('previous');
-            if (e.keyCode === 39) $('#magazine').turn('next');
+            if (e.keyCode === 37) $('#magazine').turn('previous'); // Flecha izquierda
+            if (e.keyCode === 39) $('#magazine').turn('next');     // Flecha derecha
         });
     });
 </script>
+
 </body>
 </html>
