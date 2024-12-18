@@ -1,54 +1,62 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flipbook con Turn.js</title>
-    <style>
-        body {
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #f0f0f0;
-            height: 100vh;
-            overflow: hidden;
-        }
-        #flipbook {
-            width: 90%;
-            height: 90%;
-        }
-        .page {
-            width: 100%;
-            height: 100%;
-            background-size: cover;
-            background-position: center;
-        }
-    </style>
-    <!-- Incluir Turn.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4/turn.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="../../turn.min.js"></script>
+
+<style type="text/css">
+body{
+	background:#ccc;
+}
+#magazine{
+	width:1152px;
+	height:752px;
+}
+#magazine .turn-page{
+	background-color:#ccc;
+	background-size:100% 100%;
+}
+</style>
 </head>
 <body>
-    <div id="flipbook">
-        <!-- Cada página se define como un div -->
-        <div class="page" style="background-image: url('RPi_PiPico_Digital_v11/RPi_PiPico_Digital_v11-001.png');"></div>
-        <div class="page" style="background-image: url('RPi_PiPico_Digital_v11/RPi_PiPico_Digital_v11-002.png');"></div>
-        <div class="page" style="background-image: url('RPi_PiPico_Digital_v11/RPi_PiPico_Digital_v11-003.png');"></div>
-        <div class="page" style="background-image: url('RPi_PiPico_Digital_v11/RPi_PiPico_Digital_v11-004.png');"></div>
-        <!-- Agrega más páginas según sea necesario -->
-    </div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // Inicializar Turn.js en el contenedor #flipbook
-            $("#flipbook").turn({
-                width: 800,   // Ancho del flipbook
-                height: 600,  // Altura del flipbook
-                autoCenter: true, // Centrar automáticamente
-                display: 'double', // Mostrar dos páginas a la vez
-                duration: 1000, // Duración de la animación
-            });
-        });
-    </script>
+<div id="magazine">
+	<div style="background-image:url(RPi_PiPico_Digital_v11/RPi_PiPico_Digital_v11-001.png);"></div>
+	<div style="background-image:url(RPi_PiPico_Digital_v11/RPi_PiPico_Digital_v11-002.png);"></div>
+	<div style="background-image:url(RPi_PiPico_Digital_v11/RPi_PiPico_Digital_v11-003.png);"></div>
+	<div style="background-image:url(RPi_PiPico_Digital_v11/RPi_PiPico_Digital_v11-004.png);"></div>
+	<div style="background-image:url(RPi_PiPico_Digital_v11/RPi_PiPico_Digital_v11-005.png);"></div>
+	<div style="background-image:url(RPi_PiPico_Digital_v11/RPi_PiPico_Digital_v11-006.png);"></div>
+</div>
+
+
+<script type="text/javascript">
+
+	$(window).ready(function() {
+		$('#magazine').turn({
+							display: 'double',
+							acceleration: true,
+							gradients: !$.isTouch,
+							elevation:50,
+							when: {
+								turned: function(e, page) {
+									/*console.log('Current view: ', $(this).turn('view'));*/
+								}
+							}
+						});
+	});
+	
+	
+	$(window).bind('keydown', function(e){
+		
+		if (e.keyCode==37)
+			$('#magazine').turn('previous');
+		else if (e.keyCode==39)
+			$('#magazine').turn('next');
+			
+	});
+
+</script>
+
 </body>
 </html>
