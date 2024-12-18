@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flipbook con Turn.js</title>
+    <title>Flipbook Ajustado</title>
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
     <script type="text/javascript" src="turn.min.js"></script>
     <style>
@@ -17,9 +17,8 @@
             overflow: hidden;
         }
         #magazine {
-            width: 1152px;
-            height: 752px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            transform-origin: center center;
         }
         #magazine .turn-page {
             background-color: #fff;
@@ -41,28 +40,45 @@
 
 <script>
     $(document).ready(function () {
+        // Tamaño original de las imágenes
+        const originalWidth = 1152; // Ancho de la imagen
+        const originalHeight = 752; // Altura de la imagen
+
+        function resizeMagazine() {
+            const screenWidth = window.innerWidth;
+            const screenHeight = window.innerHeight;
+
+            // Calcula el tamaño proporcional basado en la pantalla
+            let scaleFactor = Math.min(screenWidth / originalWidth, screenHeight / originalHeight);
+
+            // Ajusta el tamaño del flipbook
+            const newWidth = originalWidth * scaleFactor;
+            const newHeight = originalHeight * scaleFactor;
+
+            $('#magazine').css({
+                width: `${newWidth}px`,
+                height: `${newHeight}px`
+            });
+
+            // Reaplica Turn.js con las nuevas dimensiones
+            $('#magazine').turn('size', newWidth, newHeight);
+        }
+
+        // Inicializa Turn.js
         $('#magazine').turn({
-            width: 1152,
-            height: 752,
+            width: originalWidth,
+            height: originalHeight,
             display: 'double',
             autoCenter: true,
-            gradients: true, // Habilita el efecto visual
-            acceleration: true, // Usa aceleración por hardware
-            elevation: 50, // Altura del efecto
-            duration: 1000 // Duración de la animación
+            gradients: true,
+            acceleration: true,
+            elevation: 50,
+            duration: 1000
         });
 
-        // Eventos para gestos táctiles
-        $(document).on('touchstart', function (e) {
-            if (e.touches.length > 1) {
-                e.preventDefault();
-            }
-        });
-
-        $(window).on('keydown', function (e) {
-            if (e.keyCode === 37) $('#magazine').turn('previous'); // Flecha izquierda
-            if (e.keyCode === 39) $('#magazine').turn('next');     // Flecha derecha
-        });
+        // Ajusta el tamaño al cargar y al redimensionar la ventana
+        resizeMagazine();
+        $(window).on('resize', resizeMagazine);
     });
 </script>
 
