@@ -60,13 +60,17 @@
                 const newWidth = originalWidth * scaleFactor;
                 const newHeight = originalHeight * scaleFactor;
 
+                // Aplicamos un ajuste de la proporción
+                const adjustedWidth = Math.min(screenWidth, newWidth);
+                const adjustedHeight = Math.min(screenHeight, newHeight);
+
                 $('#magazine').css({
-                    width: `${newWidth}px`,
-                    height: `${newHeight}px`
+                    width: `${adjustedWidth}px`,
+                    height: `${adjustedHeight}px`
                 });
 
                 // Reaplica Turn.js con las nuevas dimensiones
-                $('#magazine').turn('size', newWidth, newHeight);
+                $('#magazine').turn('size', adjustedWidth, adjustedHeight);
             }
 
             // Inicializa Turn.js
