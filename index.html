@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flipbook Ajustado</title>
+    <title>Flipbook Ajustado Automáticamente</title>
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
     <script type="text/javascript" src="turn.min.js"></script>
     <style>
@@ -40,45 +40,51 @@
 
 <script>
     $(document).ready(function () {
-        // Tamaño original de las imágenes
-        const originalWidth = 1152; // Ancho de la imagen
-        const originalHeight = 752; // Altura de la imagen
+        // Cargar la primera imagen para obtener sus dimensiones
+        var firstImage = new Image();
+        firstImage.src = 'RPi_PiPico_Digital_v11/RPi_PiPico_Digital_v11-001.png';
 
-        function resizeMagazine() {
-            const screenWidth = window.innerWidth;
-            const screenHeight = window.innerHeight;
+        firstImage.onload = function () {
+            const originalWidth = firstImage.width; // Ancho de la imagen
+            const originalHeight = firstImage.height; // Altura de la imagen
 
-            // Calcula el tamaño proporcional basado en la pantalla
-            let scaleFactor = Math.min(screenWidth / originalWidth, screenHeight / originalHeight);
+            // Función para redimensionar el flipbook basado en el tamaño de la imagen
+            function resizeMagazine() {
+                const screenWidth = window.innerWidth;
+                const screenHeight = window.innerHeight;
 
-            // Ajusta el tamaño del flipbook
-            const newWidth = originalWidth * scaleFactor;
-            const newHeight = originalHeight * scaleFactor;
+                // Calcula el factor de escala basado en la pantalla
+                let scaleFactor = Math.min(screenWidth / originalWidth, screenHeight / originalHeight);
 
-            $('#magazine').css({
-                width: `${newWidth}px`,
-                height: `${newHeight}px`
+                // Ajusta el tamaño del flipbook
+                const newWidth = originalWidth * scaleFactor;
+                const newHeight = originalHeight * scaleFactor;
+
+                $('#magazine').css({
+                    width: `${newWidth}px`,
+                    height: `${newHeight}px`
+                });
+
+                // Reaplica Turn.js con las nuevas dimensiones
+                $('#magazine').turn('size', newWidth, newHeight);
+            }
+
+            // Inicializa Turn.js
+            $('#magazine').turn({
+                width: originalWidth,
+                height: originalHeight,
+                display: 'double',
+                autoCenter: true,
+                gradients: true,
+                acceleration: true,
+                elevation: 50,
+                duration: 1000
             });
 
-            // Reaplica Turn.js con las nuevas dimensiones
-            $('#magazine').turn('size', newWidth, newHeight);
-        }
-
-        // Inicializa Turn.js
-        $('#magazine').turn({
-            width: originalWidth,
-            height: originalHeight,
-            display: 'double',
-            autoCenter: true,
-            gradients: true,
-            acceleration: true,
-            elevation: 50,
-            duration: 1000
-        });
-
-        // Ajusta el tamaño al cargar y al redimensionar la ventana
-        resizeMagazine();
-        $(window).on('resize', resizeMagazine);
+            // Ajusta el tamaño al cargar y al redimensionar la ventana
+            resizeMagazine();
+            $(window).on('resize', resizeMagazine);
+        };
     });
 </script>
 
