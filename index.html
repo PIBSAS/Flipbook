@@ -1,12 +1,18 @@
 <!doctype html>
 <html>
 <head>
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script type="text/javascript" src="turn.min.js"></script>
 
 <style type="text/css">
-body{
-	background:#ccc;
+body {
+    background: #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
 }
 #magazine{
 	width:1152px;
@@ -30,33 +36,24 @@ body{
 </div>
 
 
-<script type="text/javascript">
+<script>
+    $(document).ready(function () {
+        $('#magazine').turn({
+            width: 1152,
+            height: 752,
+            display: 'double',
+            autoCenter: true,
+            gradients: true,
+            acceleration: true,
+            elevation: 50,
+            duration: 1000
+        });
 
-	$(window).ready(function() {
-		$('#magazine').turn({
-							display: 'double',
-							acceleration: true,
-							gradients: !$.isTouch,
-							elevation:50,
-							when: {
-								turned: function(e, page) {
-									/*console.log('Current view: ', $(this).turn('view'));*/
-								}
-							}
-						});
-	});
-	
-	
-	$(window).bind('keydown', function(e){
-		
-		if (e.keyCode==37)
-			$('#magazine').turn('previous');
-		else if (e.keyCode==39)
-			$('#magazine').turn('next');
-			
-	});
-
+        $(window).on('keydown', function (e) {
+            if (e.keyCode === 37) $('#magazine').turn('previous');
+            if (e.keyCode === 39) $('#magazine').turn('next');
+        });
+    });
 </script>
-
 </body>
 </html>
