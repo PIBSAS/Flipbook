@@ -53,24 +53,28 @@
                 const screenWidth = window.innerWidth;
                 const screenHeight = window.innerHeight;
 
-                // Calcula el factor de escala basado en la pantalla
-                let scaleFactor = Math.min(screenWidth / originalWidth, screenHeight / originalHeight);
+                // Ajusta el ancho al 100% de la pantalla
+                const newWidth = screenWidth;
+                // Calcula la altura proporcional según la relación de aspecto
+                const newHeight = (originalHeight / originalWidth) * newWidth;
 
-                // Ajusta el tamaño del flipbook
-                const newWidth = originalWidth * scaleFactor;
-                const newHeight = originalHeight * scaleFactor;
-
-                // Aplicamos un ajuste de la proporción
-                const adjustedWidth = Math.min(screenWidth, newWidth);
-                const adjustedHeight = Math.min(screenHeight, newHeight);
-
-                $('#magazine').css({
-                    width: `${adjustedWidth}px`,
-                    height: `${adjustedHeight}px`
-                });
+                // Si la altura calculada es mayor que la altura de la pantalla, ajusta la altura
+                if (newHeight > screenHeight) {
+                    const scaleFactor = screenHeight / newHeight;
+                    $('#magazine').css({
+                        width: `${newWidth * scaleFactor}px`,
+                        height: `${screenHeight}px`
+                    });
+                } else {
+                    // Si la altura calculada es menor que la altura de la pantalla, ajusta el tamaño
+                    $('#magazine').css({
+                        width: `${newWidth}px`,
+                        height: `${newHeight}px`
+                    });
+                }
 
                 // Reaplica Turn.js con las nuevas dimensiones
-                $('#magazine').turn('size', adjustedWidth, adjustedHeight);
+                $('#magazine').turn('size', newWidth, newHeight);
             }
 
             // Inicializa Turn.js
