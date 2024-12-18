@@ -53,30 +53,34 @@
                 const screenWidth = window.innerWidth;
                 const screenHeight = window.innerHeight;
 
-                // Ajusta el ancho al 100% de la pantalla
-                const newWidth = screenWidth;
+                // Compara si la imagen cabe en la pantalla
+                const scaleFactorWidth = screenWidth / originalWidth;
+                const scaleFactorHeight = screenHeight / originalHeight;
 
-                // Calcula la altura proporcional según la relación de aspecto
-                const newHeight = (originalHeight / originalWidth) * newWidth;
+                // Si la imagen es más grande que la pantalla, ajustamos
+                if (scaleFactorWidth < 1 || scaleFactorHeight < 1) {
+                    // Escalar a un 80% del ancho y 90% del alto
+                    const newWidth = screenWidth * 0.8;
+                    const newHeight = screenHeight * 0.9;
 
-                // Si la altura calculada excede la altura de la pantalla, ajusta la altura
-                if (newHeight > screenHeight) {
-                    // Si la altura es mayor que la pantalla, ajusta el alto para que se ajuste a la pantalla
-                    const scaleFactor = screenHeight / newHeight;
+                    // Calculamos el factor de escala para mantener la relación de aspecto
+                    const scaleFactor = Math.min(newWidth / originalWidth, newHeight / originalHeight);
+
+                    // Ajustar el tamaño del libro
                     $('#magazine').css({
-                        width: `${newWidth * scaleFactor}px`,
-                        height: `${screenHeight}px`
+                        width: originalWidth * scaleFactor + 'px',
+                        height: originalHeight * scaleFactor + 'px'
                     });
                 } else {
-                    // Si la altura es menor o igual a la pantalla, ajusta la imagen a la pantalla
+                    // Si la imagen cabe en la pantalla, usamos su tamaño original
                     $('#magazine').css({
-                        width: `${newWidth}px`,
-                        height: `${newHeight}px`
+                        width: originalWidth + 'px',
+                        height: originalHeight + 'px'
                     });
                 }
 
                 // Reaplica Turn.js con las nuevas dimensiones
-                $('#magazine').turn('size', newWidth, newHeight);
+                $('#magazine').turn('size', originalWidth, originalHeight);
             }
 
             // Inicializa Turn.js
