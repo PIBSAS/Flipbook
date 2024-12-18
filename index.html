@@ -11,7 +11,7 @@
         }
         .page {
             display: none;
-            background-size: cover;
+            background-size: contain; /* Escalar imágenes proporcionalmente */
             background-position: center;
             background-repeat: no-repeat;
             height: 100vh;
@@ -29,16 +29,18 @@
             const totalPages = 139; // Número total de páginas
             let currentPage = 0;
 
+            // Variables para el manejo de gestos táctiles
+            let startX = 0;
+            let endX = 0;
+
             function pad(number, length) {
                 return number.toString().padStart(length, '0');
             }
 
             function showPage(pageNumber) {
-                // Ocultar todas las páginas
                 const pages = document.querySelectorAll('.page');
                 pages.forEach(page => page.classList.remove('active'));
 
-                // Mostrar la página actual
                 const currentPageElement = document.getElementById(`page-${pageNumber}`);
                 if (currentPageElement) {
                     currentPageElement.classList.add('active');
@@ -51,11 +53,40 @@
                     const pageElement = document.createElement('div');
                     pageElement.className = 'page';
                     pageElement.id = `page-${i}`;
-                    pageElement.style.backgroundImage = `url('RPi_PiPico_Digital_v11/RPi_PiPico_Digital_v11-${pad(i + 1, 3)}.png')`;
+                    const imagePath = `RPi_PiPico_Digital_v11/RPi_PiPico_Digital_v11-${pad(i + 1, 3)}.png`;
+                    pageElement.style.backgroundImage = `url('${imagePath}')`;
                     container.appendChild(pageElement);
                 }
             }
 
+            function handleSwipe() {
+                const deltaX = endX - startX;
+                if (deltaX > 50) {
+                    // Swipe derecha
+                    if (currentPage > 0) {
+                        currentPage--;
+                        showPage(currentPage);
+                    }
+                } else if (deltaX < -50) {
+                    // Swipe izquierda
+                    if (currentPage < totalPages - 1) {
+                        currentPage++;
+                        showPage(currentPage);
+                    }
+                }
+            }
+
+            // Eventos táctiles para detectar swipe
+            document.body.addEventListener('touchstart', function (event) {
+                startX = event.touches[0].clientX;
+            });
+
+            document.body.addEventListener('touchend', function (event) {
+                endX = event.changedTouches[0].clientX;
+                handleSwipe();
+            });
+
+            // Eventos para teclado (flechas)
             document.body.addEventListener('keydown', function (event) {
                 if (event.key === 'ArrowRight') {
                     if (currentPage < totalPages - 1) {
