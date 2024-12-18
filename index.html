@@ -60,8 +60,8 @@
                 // Si la imagen es más grande que la pantalla, ajustamos
                 if (scaleFactorWidth < 1 || scaleFactorHeight < 1) {
                     // Escalar a un 80% del ancho y 90% del alto
-                    const newWidth = screenWidth * 0.8;
-                    const newHeight = screenHeight * 0.9;
+                    const newWidth = screenWidth * 0.75;
+                    const newHeight = screenHeight * 0.85;
 
                     // Calculamos el factor de escala para mantener la relación de aspecto
                     const scaleFactor = Math.min(newWidth / originalWidth, newHeight / originalHeight);
