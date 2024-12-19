@@ -48,20 +48,29 @@
             const screenWidth = window.innerWidth;
             const screenHeight = window.innerHeight;
 
-            // Calcula el factor de escala solo basado en el alto de la pantalla
-            const scaleFactor = Math.min(screenWidth * 0.8 / originalWidth, screenHeight * 0.9 / originalHeight);
+            // Establece el tamaño del libro según el tamaño de la imagen
+            let newWidth = originalWidth;
+            let newHeight = originalHeight;
 
-            // Calcula la nueva altura manteniendo la relación de aspecto
-            const newHeight = originalHeight * scaleFactor;
+            // Si el libro es más grande que la pantalla, ajusta el tamaño
+            if (newWidth > screenWidth * 0.8) {
+                newWidth = screenWidth * 0.8;
+                newHeight = (newWidth / originalWidth) * originalHeight;
+            }
+
+            if (newHeight > screenHeight * 0.9) {
+                newHeight = screenHeight * 0.9;
+                newWidth = (newHeight / originalHeight) * originalWidth;
+            }
 
             // Ajusta el tamaño del libro
             $('#magazine').css({
-                width: `${originalWidth}px`, // Ancho fijo
-                height: `${newHeight}px` // Altura ajustada
+                width: `${newWidth}px`,
+                height: `${newHeight}px`
             });
 
             // Reaplica Turn.js con las nuevas dimensiones
-            $('#magazine').turn('size', originalWidth, originalHeight);
+            $('#magazine').turn('size', newWidth, newHeight);
         }
 
         // Inicializa Turn.js
