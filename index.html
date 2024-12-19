@@ -52,15 +52,10 @@
             let newWidth = originalWidth;
             let newHeight = originalHeight;
 
-            // Si el libro es más grande que la pantalla, ajusta el tamaño
-            if (newWidth > screenWidth) {
-                newWidth = screenWidth;
-                newHeight = (newWidth / originalWidth) * originalHeight;
-            }
-
-            if (newHeight > screenHeight) {
-                newHeight = screenHeight;
-                newWidth = (newHeight / originalHeight) * originalWidth;
+            // Si el libro es más grande que la pantalla, no hacer nada
+            if (newWidth > screenWidth || newHeight > screenHeight) {
+                // No hacer nada, mantener el tamaño original
+                return;
             }
 
             // Ajusta el tamaño del libro
