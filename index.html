@@ -41,27 +41,38 @@
 <script>
     $(document).ready(function () {
         // Tamaño original de las imágenes
-        const originalWidth = 1152; // Ancho de la imagen
-        const originalHeight = 752; // Altura de la imagen
+        const originalWidth = 752; // Ancho fijo de la imagen
+        const originalHeight = 752; // Altura de la imagen (esto se ajustará automáticamente)
 
         function resizeMagazine() {
             const screenWidth = window.innerWidth;
             const screenHeight = window.innerHeight;
 
-            // Calcula el tamaño proporcional basado en la pantalla
-            let scaleFactor = Math.min(screenWidth / originalWidth, screenHeight / originalHeight);
+            // Calcula el factor de escala solo basado en el ancho de la pantalla
+            const scaleFactor = screenWidth / originalWidth;
 
-            // Ajusta el tamaño del flipbook
-            const newWidth = originalWidth * scaleFactor;
+            // Calcula la nueva altura manteniendo la relación de aspecto
             const newHeight = originalHeight * scaleFactor;
 
-            $('#magazine').css({
-                width: `${newWidth}px`,
-                height: `${newHeight}px`
-            });
+            // Si la altura calculada es mayor que la altura de la pantalla, ajustamos
+            if (newHeight > screenHeight * 0.9) {
+                // Escala la imagen para que no exceda el 90% de la altura de la pantalla
+                const heightFactor = (screenHeight * 0.9) / originalHeight;
+                const newWidth = originalWidth * heightFactor;
+                $('#magazine').css({
+                    width: `${newWidth}px`,
+                    height: `${originalHeight * heightFactor}px`
+                });
+            } else {
+                // Si la altura cabe, usa el ancho calculado
+                $('#magazine').css({
+                    width: `${screenWidth}px`,
+                    height: `${newHeight}px`
+                });
+            }
 
             // Reaplica Turn.js con las nuevas dimensiones
-            $('#magazine').turn('size', newWidth, newHeight);
+            $('#magazine').turn('size', originalWidth, originalHeight);
         }
 
         // Inicializa Turn.js
