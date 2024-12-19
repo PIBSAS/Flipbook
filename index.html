@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flipbook Ajustado Automáticamente</title>
+    <title>Flipbook Ajustado</title>
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
     <script type="text/javascript" src="turn.min.js"></script>
     <style>
@@ -40,65 +40,45 @@
 
 <script>
     $(document).ready(function () {
-        // Cargar la primera imagen para obtener sus dimensiones
-        var firstImage = new Image();
-        firstImage.src = 'RPi_PiPico_Digital_v11/RPi_PiPico_Digital_v11-001.png';
+        // Tamaño original de las imágenes
+        const originalWidth = 1152; // Ancho de la imagen
+        const originalHeight = 752; // Altura de la imagen
 
-        firstImage.onload = function () {
-            const originalWidth = firstImage.width; // Ancho de la imagen
-            const originalHeight = firstImage.height; // Altura de la imagen
+        function resizeMagazine() {
+            const screenWidth = window.innerWidth;
+            const screenHeight = window.innerHeight;
 
-            // Función para redimensionar el flipbook basado en el tamaño de la imagen
-            function resizeMagazine() {
-                const screenWidth = window.innerWidth;
-                const screenHeight = window.innerHeight;
+            // Calcula el tamaño proporcional basado en la pantalla
+            let scaleFactor = Math.min(screenWidth / originalWidth, screenHeight / originalHeight);
 
-                // Compara si la imagen cabe en la pantalla
-                const scaleFactorWidth = screenWidth / originalWidth;
-                const scaleFactorHeight = screenHeight / originalHeight;
+            // Ajusta el tamaño del flipbook
+            const newWidth = originalWidth * scaleFactor;
+            const newHeight = originalHeight * scaleFactor;
 
-                // Si la imagen es más grande que la pantalla, ajustamos
-                if (scaleFactorWidth < 1 || scaleFactorHeight < 1) {
-                    // Escalar a un 80% del ancho y 90% del alto
-                    const newWidth = screenWidth * 0.75;
-                    const newHeight = screenHeight * 0.85;
-
-                    // Calculamos el factor de escala para mantener la relación de aspecto
-                    const scaleFactor = Math.min(newWidth / originalWidth, newHeight / originalHeight);
-
-                    // Ajustar el tamaño del libro
-                    $('#magazine').css({
-                        width: originalWidth * scaleFactor + 'px',
-                        height: originalHeight * scaleFactor + 'px'
-                    });
-                } else {
-                    // Si la imagen cabe en la pantalla, usamos su tamaño original
-                    $('#magazine').css({
-                        width: originalWidth + 'px',
-                        height: originalHeight + 'px'
-                    });
-                }
-
-                // Reaplica Turn.js con las nuevas dimensiones
-                $('#magazine').turn('size', originalWidth, originalHeight);
-            }
-
-            // Inicializa Turn.js
-            $('#magazine').turn({
-                width: originalWidth,
-                height: originalHeight,
-                display: 'double',
-                autoCenter: true,
-                gradients: true,
-                acceleration: true,
-                elevation: 50,
-                duration: 1000
+            $('#magazine').css({
+                width: `${newWidth}px`,
+                height: `${newHeight}px`
             });
 
-            // Ajusta el tamaño al cargar y al redimensionar la ventana
-            resizeMagazine();
-            $(window).on('resize', resizeMagazine);
-        };
+            // Reaplica Turn.js con las nuevas dimensiones
+            $('#magazine').turn('size', newWidth, newHeight);
+        }
+
+        // Inicializa Turn.js
+        $('#magazine').turn({
+            width: originalWidth,
+            height: originalHeight,
+            display: 'double',
+            autoCenter: true,
+            gradients: true,
+            acceleration: true,
+            elevation: 50,
+            duration: 1000
+        });
+
+        // Ajusta el tamaño al cargar y al redimensionar la ventana
+        resizeMagazine();
+        $(window).on('resize', resizeMagazine);
     });
 </script>
 
